@@ -1,0 +1,63 @@
+---
+/**
+ * Chrome: tudo o que fica fixo ao viewport durante o scroll inteiro.
+ * Inverte a cor via [data-hud] no <html> (feito por scenes.js).
+ */
+---
+
+<div class="chrome" data-chrome>
+  <a class="brand" href="#top">
+    <span class="brand__name">João Afonso Excellence</span>
+  </a>
+
+  <!-- Um só controlo, e faz alguma coisa: percorre a sequência inteira
+       com o easing do Lenis. É a demonstração mais curta possível do
+       que a Academy sabe fazer — carregas e vês a coreografia. -->
+  <button class="demo" type="button" data-demo>
+    <span class="demo__dot" aria-hidden="true"></span>
+    <span class="demo__label" data-demo-label>Play the scroll</span>
+  </button>
+
+  <div class="toggle">
+    <button class="toggle__switch" type="button" data-theme-toggle>
+      <span class="sr">Alternar tema</span>
+      <span class="toggle__knob" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="meta-top micro">
+    <span>GSAP · Scroll · WebGL</span>
+    <span>Online · Worldwide</span>
+  </div>
+
+  <!-- Telemetria a sério, não texto de enchimento: o número do frame e
+       a percentagem vêm do mesmo valor que desenha o canvas. Prova que
+       o scrubbing é real, e é isso que a Academy tem para mostrar. -->
+  <aside class="rail" data-telemetry>
+    <div class="rail__row">
+      <span class="rail__k micro">Frame</span>
+      <span class="rail__n" data-tel-frame>001<span class="rail__sub">/150</span></span>
+    </div>
+    <div class="rail__row">
+      <span class="rail__k micro">Sequence</span>
+      <span class="rail__n" data-tel-seq>0<span class="rail__sub">%</span></span>
+    </div>
+    <div class="rail__row">
+      <span class="rail__k micro">Page</span>
+      <span class="rail__n" data-tel-page>0<span class="rail__sub">%</span></span>
+    </div>
+  </aside>
+
+  <p class="byline micro" data-byline>
+    <span class="byline__k">Built by</span>
+    <span class="byline__v">João Afonso</span>
+  </p>
+
+  <p class="cue" data-cue aria-label="Scroll to explore">
+    <span class="cue__arrow" aria-hidden="true">↓</span>
+  </p>
+
+  <div class="progress" aria-hidden="true">
+    <div class="progress__fill" data-progress></div>
+  </div>
+</div>

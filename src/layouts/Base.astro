@@ -1,0 +1,37 @@
+---
+import '../styles/global.css';
+import { seqUrl } from '../scripts/lib/sequence-config.js';
+
+const { title, description } = Astro.props;
+
+// Mesmo URL que o loader vai pedir (token `?v=` incluído), senão o
+// frame 1 é descarregado duas vezes.
+const firstFrame = seqUrl('desktop', 0);
+---
+
+<!doctype html>
+<html lang="en" data-hud="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+
+    <!-- Primeiro frame da sequência: pinta antes de qualquer JS. -->
+    <link rel="preload" as="image" href={firstFrame} fetchpriority="high" />
+  </head>
+
+  <body>
+    <slot />
+    <script>
+      import '../scripts/main.js';
+    </script>
+  </body>
+</html>

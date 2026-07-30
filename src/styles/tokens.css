@@ -1,0 +1,84 @@
+/* ============================================================
+   TOKENS
+   Valores de cor derivados por amostragem do vídeo de referência.
+   Nota: o vídeo é uma filmagem de um monitor, logo os hex são
+   uma reconstrução do *rácio* observado (palco cinza-médio quente
+   -> painel quase branco), não uma leitura colorimétrica.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- Palco (secção pinned com o canvas) ---- */
+  --stage-base: #807d77;
+  --stage-lift: #9d9a93; /* luz suave em cima à direita (medida no vídeo) */
+  --stage-shade: #67655f;
+
+  /* ---- Painel (manifesto claro) ---- */
+  --panel: #f1efe9;
+  --panel-ink: #1a1917;
+  --panel-ink-soft: rgb(26 25 23 / 0.58);
+
+  /* ---- Tinta ---- */
+  --paper: #f7f5f0;
+  --paper-72: rgb(247 245 240 / 0.72);
+  --paper-48: rgb(247 245 240 / 0.48);
+  --paper-28: rgb(247 245 240 / 0.28);
+  --ink: #111110;
+
+  /* ---- HUD (inverte quando o painel claro toma o ecrã) ---- */
+  --hud-fg: var(--paper);
+  --hud-fg-dim: var(--paper-48);
+  --hud-rule: var(--paper-28);
+  --hud-chip-bg: rgb(15 15 14 / 0.84);
+  --hud-chip-fg: var(--paper);
+  --hud-track: rgb(247 245 240 / 0.9);
+  --hud-knob: #14130f;
+
+  /* ---- Tipografia ----
+     Display: grotesca geométrica pesada.
+     Accent : serif itálica de alto contraste ("motion.", "move.").
+     Substitui por Aeonik / Neue Montreal / PP Editorial quando
+     tiveres licença — os fallbacks abaixo mantêm as métricas. */
+  --font-display: 'Instrument Sans', 'Helvetica Neue', -apple-system,
+    system-ui, sans-serif;
+  --font-accent: 'Instrument Serif', 'Times New Roman', Georgia, serif;
+
+  /* Escala fluida (base 16px / viewport 380 -> 1600) */
+  --step-micro: clamp(0.5625rem, 0.53rem + 0.16vw, 0.6875rem);
+  --step--1: clamp(0.75rem, 0.71rem + 0.2vw, 0.875rem);
+  --step-0: clamp(0.875rem, 0.83rem + 0.24vw, 1rem);
+  --step-1: clamp(1rem, 0.93rem + 0.36vw, 1.25rem);
+  --step-2: clamp(1.375rem, 1.15rem + 1.1vw, 2.125rem);
+  --step-hero: clamp(2.25rem, 1.1rem + 5.4vw, 5.75rem);
+  --step-lede: clamp(1.375rem, 0.9rem + 2.1vw, 2.5rem);
+
+  --track-micro: 0.2em;
+  --lh-tight: 0.94;
+  --lh-body: 1.5;
+
+  /* ---- Ritmo / espaço ---- */
+  --gutter: clamp(1.25rem, 0.6rem + 3.2vw, 4.5rem);
+  --hud-inset: clamp(1rem, 0.5rem + 2.4vw, 2.75rem);
+  --measure: 34ch;
+  --radius-panel: clamp(1.5rem, 0.6rem + 3vw, 3rem);
+  --radius-pill: 999px;
+
+  /* ---- Easing / duração (transições de UI, não de scroll) ---- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --dur-fast: 0.22s;
+  --dur-ui: 0.5s;
+  --dur-theme: 0.7s;
+}
+
+/* HUD invertido: aplicado por JS quando o painel claro cobre o topo. */
+[data-hud='light'] {
+  --hud-fg: var(--panel-ink);
+  --hud-fg-dim: var(--panel-ink-soft);
+  --hud-rule: rgb(26 25 23 / 0.16);
+  --hud-chip-bg: rgb(26 25 23 / 0.9);
+  --hud-chip-fg: var(--panel);
+  --hud-track: rgb(26 25 23 / 0.12);
+  --hud-knob: #14130f;
+}

@@ -1,0 +1,41 @@
+---
+/**
+ * Bloco de legenda que corre em fluxo normal por cima do palco sticky.
+ * anchor="mid"  -> centrado verticalmente (hero)
+ * anchor="low"  -> ancorado em baixo (entra a subir, como no vídeo)
+ *
+ * Cada linha vive dentro de uma máscara com `overflow: hidden`, para
+ * poder subir por trás dela no reveal.
+ */
+const { anchor = 'low', lines = [], accent, lede, level = 2 } = Astro.props;
+const H = `h${level}`;
+---
+
+<article class="caption" data-anchor={anchor}>
+  <div class="caption__inner" data-caption-inner>
+    <H class="display">
+      {
+        lines.map((l) => (
+          <span class="mask">
+            <span class="display__line">{l}</span>
+          </span>
+        ))
+      }
+      {
+        accent && (
+          <span class="mask mask--accent">
+            <em>{accent}</em>
+          </span>
+        )
+      }
+    </H>
+
+    {
+      lede && (
+        <span class="mask">
+          <p class="lede">{lede}</p>
+        </span>
+      )
+    }
+  </div>
+</article>

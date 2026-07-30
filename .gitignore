@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.astro/
+.claude/
+
+# Saída do Blender (PNG RGBA, pesado).
+# Regenera com: npm run seq:render && npm run seq:encode
+raw-seq/
+raw-seq-test/
+preview.mp4
+
+# Os WebP otimizados em public/seq e public/seq-chrome ficam versionados:
+# são necessários em runtime no deploy da Vercel.
+
+# Malhas fonte (sculpts de ZBrush chegam facilmente a centenas de MB).
+# O README fica versionado, os assets não.
+assets-3d/*
+!assets-3d/README.md

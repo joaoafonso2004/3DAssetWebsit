@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Caption from '../components/Caption.astro';
+
+/* Copy do manifesto: transcrito do vídeo de referência. */
+const MANIFESTO =
+  'A website should move the way great things move — with intention, never noise. ' +
+  'So we sweat every scroll, every reveal, every frame, until the motion feels inevitable. ' +
+  'Because that is where craft becomes something you can feel.';
+---
+
+<Base
+  title="João Afonso Excellence — Building the web in motion"
+  description="Smooth scroll, scrubbed frame sequences and pinned reveals."
+>
+  <Chrome />
+
+  <main id="top">
+    <div class="scope" data-scope>
+      <!-- Palco pinned: canvas transparente sobre gradiente ---------- -->
+      <div class="stage" data-stage>
+        <canvas
+          class="stage__canvas"
+          data-sequence
+          role="img"
+          aria-label="Crânio em rotação, animado pelo scroll"></canvas>
+      </div>
+
+      <!-- Legendas: fluxo normal por cima do palco ------------------- -->
+      <div class="captions" data-captions>
+        <Caption
+          anchor="mid"
+          level={1}
+          lines={['Building', 'the web in']}
+          accent="motion."
+          lede="I teach creators to design, animate and ship high-end websites — scroll effects, GSAP, and the craft behind them."
+        />
+
+        <Caption
+          lines={['Smooth scroll.', 'Scrubbed video.']}
+          accent="Pinned reveals."
+          lede="One continuous take: the sequence is pinned, the copy travels over it, and the frame you see is the exact frame your scroll asked for."
+        />
+
+        <Caption
+          lines={['Learn to build', 'sites that']}
+          accent="move."
+          lede="Join a community of motion-first designers and developers shipping work that earns the second scroll."
+        />
+      </div>
+
+      <!-- Painel claro que sobe sobre o palco ainda pinned ----------- -->
+      <section class="manifesto" id="manifesto" data-manifesto>
+        <div class="manifesto__pin">
+          <p
+            class="kinetic"
+            data-kinetic
+            data-armed="false"
+            aria-label={MANIFESTO}
+          >
+            {MANIFESTO}
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="outro" id="outro">
+      <div class="outro__rule"></div>
+      <div class="outro__row micro">
+        <span><strong>João Afonso Excellence</strong></span>
+        <span>Lenis · GSAP · ScrollTrigger · Canvas 2D</span>
+        <span>© {new Date().getFullYear()}</span>
+      </div>
+    </footer>
+  </main>
+</Base>

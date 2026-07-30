@@ -1,0 +1,23 @@
+{
+  "name": "sitenext",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "seq:render": "blender -b -P tools/blender_liquid_sequence.py -- --frames 150 --res 1600 --out ./raw-seq",
+    "seq:encode": "node tools/encode-sequence.mjs --in ./raw-seq --out ./public/seq",
+    "seq:encode:chrome": "node tools/encode-sequence.mjs --in ./assets-3d/SeqFramesChrome --out ./public/seq-chrome --quality 82",
+    "seq:placeholder": "node tools/make-placeholder-seq.mjs --frames 150"
+  },
+  "dependencies": {
+    "astro": "^5.6.0",
+    "gsap": "^3.13.0",
+    "lenis": "^1.3.1"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.1"
+  }
+}
