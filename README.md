@@ -1,84 +1,85 @@
-# SiteNext
+# João Afonso — 3D Asset Website
 
-Recriação do layout e do comportamento de scroll analisados em `d.mov`:
-Lenis + GSAP/ScrollTrigger + sequência de frames em Canvas 2D, sobre Astro.
+Website experimental que desenvolvi para explorar animação 3D controlada por
+scroll, transições cinematográficas e interação em Canvas 2D.
 
-## Arrancar
+**Live:** [3dassetwebsiteja.vercel.app](https://3dassetwebsiteja.vercel.app/)
+
+## Sobre o projeto
+
+O elemento principal é uma sequência de 150 frames de uma caveira 3D. O frame
+apresentado acompanha a posição do scroll, criando a sensação de controlar
+diretamente a animação.
+
+Também criei uma segunda sequência com acabamento cromado. No computador, o
+efeito aparece ao passar o cursor sobre a caveira. Em mobile, funciona através
+de toque e arrasto. A revelação é limitada à silhueta do modelo e usa uma
+máscara orgânica em movimento para evitar o aspeto de um gradiente circular.
+
+Outros detalhes do projeto:
+
+- scroll suave com Lenis;
+- animações e sincronização com GSAP e ScrollTrigger;
+- sequência de imagens renderizada em Canvas 2D;
+- carregamento progressivo dos frames;
+- texto cinético e transições ligadas ao scroll;
+- layout responsivo e interação tátil;
+- suporte para `prefers-reduced-motion`.
+
+## Tecnologias
+
+- Astro
+- JavaScript
+- GSAP
+- ScrollTrigger
+- Lenis
+- Canvas API
+- Sharp
+
+## Executar localmente
 
 ```bash
+git clone https://github.com/joaoafonso2004/3DAssetWebsit.git
+cd 3DAssetWebsit
 npm install
-```
-
-Para ver a página a funcionar **já**, sem passar pelo Blender, há uma
-sequência sintética (forma metaball a agitar-se e a escorrer) que valida
-loader, scrub, pin e enquadramento:
-
-```bash
-npm run seq:placeholder
-```
-
-```bash
 npm run dev
 ```
 
-Para o asset a sério, ver [BLENDER.md](BLENDER.md) — resumo:
+O projeto fica disponível em `http://localhost:4321`.
+
+Para gerar a versão de produção:
 
 ```bash
-blender -b -P tools/blender_liquid_sequence.py -- --frames 150 --res 1600 --out ./raw-seq
+npm run build
+npm run preview
 ```
+
+## Sequências de imagens
+
+As sequências usadas pelo site estão organizadas em duas versões:
+
+- `public/seq` — material base;
+- `public/seq-chrome` — material cromado usado na interação.
+
+Cada sequência tem assets separados para desktop e mobile. Os ficheiros WebP
+podem ser novamente processados com:
 
 ```bash
 npm run seq:encode
+npm run seq:encode:chrome
 ```
 
-```bash
-npm run dev
-```
+## Estrutura principal
 
-## Mapa
-
-```
+```text
 src/
-  pages/index.astro          composição da página
-  layouts/Base.astro         head, fontes, preload do 1.º frame
-  components/
-    Chrome.astro             nav + HUD fixo (inverte com [data-hud])
-    Caption.astro            bloco de legenda que corre sobre o palco
-  styles/
-    tokens.css               cores, escala tipográfica, easings
-    global.css               reset + todos os componentes
-  scripts/
-    main.js                  boot e ordem de arranque
-    lib/env.js               deteção de capacidade → tier de asset e efeitos
-    lib/smooth-scroll.js     Lenis + ligação ao ticker do GSAP
-    lib/frame-sequence.js    loader em escada + desenho no canvas
-    lib/kinetic-text.js      revelação palavra a palavra
-    lib/scenes.js            ScrollTriggers (sequência, legendas, HUD, progresso)
-tools/
-  blender_liquid_sequence.py gera a sequência
-  encode-sequence.mjs        PNG RGBA → WebP em dois tiers
-  make-placeholder-seq.mjs   sequência sintética para testar sem Blender
+  components/        componentes da interface
+  layouts/           estrutura base da página
+  pages/             página principal
+  scripts/           animações, scroll e Canvas
+  styles/            estilos globais e variáveis
+public/
+  seq/               sequência base
+  seq-chrome/        sequência cromada
+tools/               scripts para preparar os frames
 ```
-
-## Os três valores que vais querer mexer
-
-| Valor | Onde | Efeito |
-|---|---|---|
-| `LERP = 0.055` | `lib/smooth-scroll.js` | inércia do scroll. Medida do vídeo; sobe para `0.075` se quiseres mais reativo |
-| `TOTAL_FRAMES = 150` | `scripts/main.js` | tem de ser igual ao `frame_end` do Blender |
-| `SCATTER` | `lib/kinetic-text.js` | amplitude do caos inicial das palavras |
-
-## Notas sobre a fidelidade ao vídeo
-
-- **Inércia:** obtida por medição, não por estimativa. Segui a aresta do
-  painel claro frame a frame; a desaceleração dá `lerp ≈ 0.053`. O
-  raciocínio completo está em comentário no `smooth-scroll.js`.
-- **Copy:** o parágrafo do manifesto é transcrição literal. O texto de
-  apoio das legendas 2 e 3 é ilegível no vídeo (a gravação é de um
-  monitor filmado, ~466 px de largura útil) — está escrito por
-  aproximação e é substituível sem tocar em código.
-- **Cores:** o vídeo é uma filmagem de um ecrã, logo os hex em
-  `tokens.css` reconstroem o *rácio* medido (palco cinza-médio quente →
-  painel quase branco), não uma leitura colorimétrica.
-- **Pin:** feito com `position: sticky`, não com `ScrollTrigger.pin`.
-  Sem pin-spacer, sem reflow em resize.
