@@ -6,7 +6,8 @@ const { title, description } = Astro.props;
 
 // Mesmo URL que o loader vai pedir (token `?v=` incluído), senão o
 // frame 1 é descarregado duas vezes.
-const firstFrame = seqUrl('desktop', 0);
+const firstDesktopFrame = seqUrl('desktop', 0);
+const firstMobileFrame = seqUrl('mobile', 0);
 ---
 
 <!doctype html>
@@ -25,7 +26,20 @@ const firstFrame = seqUrl('desktop', 0);
     />
 
     <!-- Primeiro frame da sequência: pinta antes de qualquer JS. -->
-    <link rel="preload" as="image" href={firstFrame} fetchpriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      href={firstDesktopFrame}
+      media="(min-width: 701px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href={firstMobileFrame}
+      media="(max-width: 700px)"
+      fetchpriority="high"
+    />
   </head>
 
   <body>

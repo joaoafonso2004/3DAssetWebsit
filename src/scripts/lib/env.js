@@ -55,6 +55,7 @@ export function readEnv() {
 
   return {
     reducedMotion,
+    narrow,
     tier,
     dpr,
     /* Tier de asset pela LARGURA CSS, não por pixels de dispositivo: é

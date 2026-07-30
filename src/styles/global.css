@@ -13,6 +13,7 @@
 }
 
 html {
+  overflow-x: clip;
   /* Lenis assume o controlo: nunca deixar o browser interpolar também. */
   scroll-behavior: auto;
   -webkit-text-size-adjust: 100%;
@@ -402,6 +403,7 @@ a {
   inset: 0;
   width: 100%;
   height: 100%;
+  touch-action: pan-y;
   /* O canvas é transparente: o gradiente do palco lê-se por baixo. */
   background: transparent;
 }
@@ -435,16 +437,63 @@ a {
 }
 
 @media (max-width: 900px) {
+  .brand {
+    top: 0.65rem;
+    left: var(--gutter);
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+  }
+  .brand__name {
+    max-width: 15ch;
+    line-height: 1.2;
+  }
+  .toggle {
+    top: 0.65rem;
+    right: var(--gutter);
+  }
+  .toggle__switch {
+    width: 3.15rem;
+    height: 2.75rem;
+    align-items: center;
+    padding: 0.62rem 0.28rem;
+  }
+  [data-hud='light'] .toggle__knob {
+    translate: calc(-1 * (3.15rem - 1.31rem - 0.56rem)) 0;
+  }
+  .demo {
+    top: 4rem;
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem 0.6rem;
+    backdrop-filter: blur(10px) saturate(1.15);
+  }
   .caption__inner {
     max-width: none;
+  }
+  .caption {
+    min-height: 112svh;
+    align-content: end;
+    padding-bottom: max(9svh, 4.75rem);
+  }
+  .caption[data-anchor='mid'] {
+    align-content: end;
+    min-height: 100svh;
+    padding-bottom: max(12svh, 6.5rem);
+  }
+  .display {
+    font-size: clamp(2.35rem, 11.5vw, 4.15rem);
+    line-height: 0.92;
+  }
+  .lede {
+    max-width: 31ch;
+    font-size: clamp(0.8rem, 3.6vw, 0.95rem);
+    line-height: 1.5;
+    color: var(--paper-72);
   }
   .rail,
   .meta-top,
   .byline {
     display: none;
-  }
-  .demo {
-    padding: 0.55rem 0.95rem 0.5rem;
   }
 }
 
@@ -454,6 +503,7 @@ a {
 .manifesto {
   position: relative;
   z-index: 3;
+  overflow: clip;
   /* A sobreposição é o que faz o painel "subir" enquanto o palco
      continua sticky.
 

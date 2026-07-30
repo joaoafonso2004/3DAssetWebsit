@@ -50,7 +50,9 @@ function boot() {
     version: SEQ_VERSION,
     dpr: env.dpr,
     concurrency: env.concurrency,
-    focal: [0.5, 0.5],
+    // Em portrait, sobe o sujeito para libertar a metade inferior às
+    // legendas. No desktop mantém o enquadramento central original.
+    focal: env.narrow ? [0.5, 0.22] : [0.5, 0.5],
     /**
      * Zoom [inicio, fim].
      *
@@ -66,7 +68,7 @@ function boot() {
      * Se re-renderizares com outro movimento de câmara, re-afina este
      * segundo valor.
      */
-    zoom: [0.92, 1.47],
+    zoom: env.narrow ? [1.02, 1.42] : [0.92, 1.47],
   });
 
   /* ---- 2. Hover -------------------------------------------------

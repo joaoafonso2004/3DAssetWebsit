@@ -63,16 +63,6 @@ export function createChromeHover({
 }) {
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  if (!finePointer) {
-    return {
-      load: () => Promise.resolve(),
-      tick() {},
-      rest() {},
-      setActive() {},
-      destroy() {},
-    };
-  }
-
   const frames = new Array(total).fill(null);
   const suffix = version ? `?v=${version}` : '';
   const frameUrl = (i) => `${dir}/frame_${pad(i + 1)}.${ext}${suffix}`;
@@ -104,6 +94,9 @@ export function createChromeHover({
   let renderY = 0;
   let hasPosition = false;
   let pointerInCanvas = false;
+  let touchActive = false;
+  let touchPointerId = null;
+  let touchHold = 0;
   let opacity = 0;
   let targetOpacity = 0;
   let active = true;
@@ -178,11 +171,38 @@ export function createChromeHover({
     }
   }
 
-  function leaveWindow() {
-    pointerInCanvas = false;
+  function movePointer(event) {
+    updatePointer(event);
+    if (!finePointer && touchActive && event.pointerId === touchPointerId) {
+      touchHold = 0.9;
+    }
   }
 
-  window.addEventListener('pointermove', updatePointer, { passive: true });
+  function beginTouch(event) {
+    if (finePointer || event.isPrimary === false) return;
+    updatePointer(event);
+    if (!pointerInCanvas) return;
+    touchActive = true;
+    touchPointerId = event.pointerId;
+    touchHold = 1.2;
+  }
+
+  function endTouch(event) {
+    if (finePointer || event.pointerId !== touchPointerId) return;
+    touchActive = false;
+    touchPointerId = null;
+    // Um toque curto continua visível tempo suficiente para ser lido.
+    touchHold = Math.max(touchHold, 0.85);
+  }
+
+  function leaveWindow() {
+    if (finePointer) pointerInCanvas = false;
+  }
+
+  window.addEventListener('pointermove', movePointer, { passive: true });
+  window.addEventListener('pointerdown', beginTouch, { passive: true });
+  window.addEventListener('pointerup', endTouch, { passive: true });
+  window.addEventListener('pointercancel', endTouch, { passive: true });
   document.documentElement.addEventListener('pointerleave', leaveWindow, {
     passive: true,
   });
@@ -320,10 +340,13 @@ export function createChromeHover({
     const now = typeof time === 'number' ? time : performance.now() / 1000;
     const dt = Math.min(0.05, Math.max(0, now - lastTime));
     lastTime = now;
+    if (!finePointer && !touchActive && touchHold > 0) {
+      touchHold = Math.max(0, touchHold - dt);
+    }
 
     targetOpacity =
       active &&
-      pointerInCanvas &&
+      (finePointer ? pointerInCanvas : touchActive || touchHold > 0) &&
       hasPosition &&
       sequence.isOpaqueAt(pointerX, pointerY)
         ? 1
@@ -368,7 +391,10 @@ export function createChromeHover({
     },
     destroy() {
       destroyed = true;
-      window.removeEventListener('pointermove', updatePointer);
+      window.removeEventListener('pointermove', movePointer);
+      window.removeEventListener('pointerdown', beginTouch);
+      window.removeEventListener('pointerup', endTouch);
+      window.removeEventListener('pointercancel', endTouch);
       document.documentElement.removeEventListener('pointerleave', leaveWindow);
       sequence.setOverlay(null);
       frames.forEach((frame) => frame?.close?.());
